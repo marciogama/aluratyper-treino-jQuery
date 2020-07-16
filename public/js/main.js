@@ -15,6 +15,20 @@ campo.on("input",function(){
     $("#contador-caracteres").text(qtdCaracteres);
 });
 
+let tempoRestante = $("#tempo-restante").text();
+campo.one("focus",function(){
+    let cronometroID = setInterval(function(){
+        $("#tempo-digitacao").text(tempoRestante);
+        if(tempoRestante<1){
+            campo.attr("disabled", true);
+            clearInterval(cronometroID);
+            $("#tempo-digitacao").text(0);
+        }
+        tempoRestante--;
+
+    },1000);
+
+});
 
 // .text() pega conteudo de tags <p> <ul> etc.
 // .val() pega conteudo de tags inputs ex.: <textarea> <input> <select>
