@@ -28,27 +28,12 @@ function inicializaContadores() {
     });
 };
 
-function inicializaCronometro() {
-    let tempoRestante = $("#tempo-digitacao").text();
-    campo.one("focus", function(){
-        let cronometroID = setInterval(function(){
-            tempoRestante--;
-            $("#tempo-digitacao").text(tempoRestante);
-            if(tempoRestante < 1){
-                campo.attr("disabled", true);
-                clearInterval(cronometroID);
-                campo.toggleClass("campo-desativado");
-                inserePlacar();
-            }
-        }, 1000);
-    });
-}
-
 function inicializaMarcadores(){
     let frase = $(".frase").text();
     campo.on("input", function(){
         var digitado = campo.val();
         var comparavel = frase.substr(0,digitado.length);
+
         if(digitado == comparavel){
             campo.addClass("borda-verde");
             campo.removeClass("borda-vermelha");
@@ -59,30 +44,34 @@ function inicializaMarcadores(){
     });
 }
 
+function inicializaCronometro() {
+    let tempoRestante = $("#tempo-digitacao").text();
+    campo.one("focus", function(){
+        let cronometroID = setInterval(function(){
+            tempoRestante--;
+            $("#tempo-digitacao").text(tempoRestante);
+            if(tempoRestante < 1){
+                clearInterval(cronometroID);
+                finalizaJogo();
+            }
+        }, 1000);
+    });
+}
+
+function finalizaJogo() {
+    campo.attr("disabled", true);
+    campo.toggleClass("campo-desativado");
+    inserePlacar();
+}
+
 function reiniciaJogo() {
     campo.attr("disabled",false);
     campo.val("");
-    campo.toggleClass("campo-desativado");
-    campo.removeClass("borda-vermelha");
-    campo.removeClass("borda-verde");
     $("#contador-palavras").text("0");
     $("#contador-caracteres").text("0");
     $("#tempo-digitacao").text(tempoInicial);
     inicializaCronometro();
+    campo.toggleClass("campo-desativado");
+    campo.removeClass("borda-vermelha");
+    campo.removeClass("borda-verde");
 }
-
-function inserePlacar(){
-    let corpoTabela = $(".placar").find("tbody");
-    let usuario = "Pedro";
-    let numPalavras = $("#contador-palavras").text();
-
-    let linha = "<tr>"+
-                    "<td>"+ usuario + "</td>" +
-                    "<td>"+ numPalavras + "</td>" +
-                "</tr>"    
-    corpoTabela.prepend(linha); // coloca no início do placar            
-    //corpoTabela.append(linha);  // coloca no final do placar
-}
-
-// .text() pega conteudo de tags <p> <ul> etc.
-// .val() pega conteudo de tags inputs ex.: <textarea> <input> <select>
