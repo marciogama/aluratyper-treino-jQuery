@@ -38,6 +38,7 @@ function inicializaCronometro() {
                 campo.attr("disabled", true);
                 clearInterval(cronometroID);
                 campo.toggleClass("campo-desativado");
+                inserePlacar();
             }
         }, 1000);
     });
@@ -70,6 +71,18 @@ function reiniciaJogo() {
     inicializaCronometro();
 }
 
+function inserePlacar(){
+    let corpoTabela = $(".placar").find("tbody");
+    let usuario = "Pedro";
+    let numPalavras = $("#contador-palavras").text();
+
+    let linha = "<tr>"+
+                    "<td>"+ usuario + "</td>" +
+                    "<td>"+ numPalavras + "</td>" +
+                "</tr>"    
+    corpoTabela.prepend(linha); // coloca no início do placar            
+    //corpoTabela.append(linha);  // coloca no final do placar
+}
 
 // .text() pega conteudo de tags <p> <ul> etc.
 // .val() pega conteudo de tags inputs ex.: <textarea> <input> <select>
