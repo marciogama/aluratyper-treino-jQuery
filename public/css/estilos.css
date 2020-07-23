@@ -23,3 +23,12 @@
 .borda-vermelha{
     border: 3px solid red;
 }
+
+.placar {
+    display: none;
+}
+
+/* O overflow: scroll evita que a barra de rolagem desloque a tela para esquerda */
+body {
+    overflow: scroll;
+}
